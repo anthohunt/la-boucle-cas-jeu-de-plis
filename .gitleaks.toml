@@ -1,0 +1,3 @@
+# default rules only; nothing to allow.
+[extend]
+useDefault = true
