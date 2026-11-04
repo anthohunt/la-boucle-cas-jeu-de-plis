@@ -28,14 +28,14 @@ bot of the production game, a Monte-Carlo search bot. Full freedom of method, on
 never moves. Figures below are from [`recit/journal.jsonl`](recit/journal.jsonl) and
 [`recit/progression.jsonl`](recit/progression.jsonl) (400 deals per measure unless said otherwise).
 
-* Starting point (after a reset, see below): the trained network wins 47.1 % of the games and scores 196.3 points per game, against 197.1 for the reference bot.
-* The agent first trained a network head that guesses where the hidden cards are. A "champion" reached 59.6 % / 204.0 points, confirmed once on fresh deals (+2.1 points paired). **Three more rounds of the same recipe all fell back to 49-52 %**: the 59.6 % was largely a lucky draw. Initialisation alone moves results by about 1.6 points.
-* It then found a lever that was not machine learning: more simulated deals per move for its own seat (16 → 48: 60.6 % / 224.6). Mapping the win rate against thinking time showed a plateau between 750 and 1000 ms.
-* **Isolation test:** the rule bot alone at 1000 ms (64.1 % / 236.6) equals the champion with its network (64.3 % / 232.6). **The trained network added nothing.** The research was redirected to the search itself.
-* A sweep of evaluation weights found one "winner" (+4.3 points of win rate over 800 deals) that **disappeared when the measure was made without a time limit** (62.8 % vs 64.1 %): it was an artefact of time-bounded measuring on a machine that could not complete its simulations in time. Thirteen weight variants, three sample budgets, six time budgets and eight training rounds ended with: no change to the weights, no network.
-* **Delivered and put in production:** rules + 256 simulated deals per move: **63.8 % / 239.4 points over 1600 deals vs 60.0 % / 220.9 over 1200 deals for the bot that was in production** (+3.8 points of win rate, +18.5 points per game) from a single setting.
+* Starting point (after a reset, see below): the trained network wins 47.1% of the games and scores 196.3 points per game, against 197.1 for the reference bot.
+* The agent first trained a network head that guesses where the hidden cards are. A "champion" reached 59.6% / 204.0 points, confirmed once on fresh deals (+2.1 points paired). **Three more rounds of the same recipe all fell back to 49-52%**: the 59.6% was largely a lucky draw. Initialisation alone moves results by about 1.6 points.
+* It then found a lever that was not machine learning: more simulated deals per move for its own seat (16 → 48: 60.6% / 224.6). Mapping the win rate against thinking time showed a plateau between 750 and 1000 ms.
+* **Isolation test:** the rule bot alone at 1000 ms (64.1% / 236.6) equals the champion with its network (64.3% / 232.6). **The trained network added nothing.** The research was redirected to the search itself.
+* A sweep of evaluation weights found one "winner" (+4.3 points of win rate over 800 deals) that **disappeared when the measure was made without a time limit** (62.8% vs 64.1%): it was an artefact of time-bounded measuring on a machine that could not complete its simulations in time. Thirteen weight variants, three sample budgets, six time budgets and eight training rounds ended with: no change to the weights, no network.
+* **Delivered and put in production:** rules + 256 simulated deals per move: **63.8% / 239.4 points over 1600 deals vs 60.0% / 220.9 over 1200 deals for the bot that was in production** (+3.8 points of win rate, +18.5 points per game) from a single setting.
 
-The most valuable outputs were a one-line change and a negative result (the network is useless at equal search budget), plus measurement mistakes caught on the way: two machines judging with two different builds of the judge for two days; 20 % duplicate deals in the production data; a relative measure ("share of points taken from the current champion") that rewarded a champion for beating its predecessor while losing to everyone else. The method that corrects them is in [`recit/program.md`](recit/program.md); two side experiments and their adversarial reviews are in [`recit/experiences-annexes.md`](recit/experiences-annexes.md).
+The most valuable outputs were a one-line change and a negative result (the network is useless at equal search budget), plus measurement mistakes caught on the way: two machines judging with two different builds of the judge for two days; 20% duplicate deals in the production data; a relative measure ("share of points taken from the current champion") that rewarded a champion for beating its predecessor while losing to everyone else. The method that corrects them is in [`recit/program.md`](recit/program.md); two side experiments and their adversarial reviews are in [`recit/experiences-annexes.md`](recit/experiences-annexes.md).
 
 The human wrote and rewrote the mission, and stopped the experiment and ordered the deployment; no human validated individual attempts.
 A paper on a closely related card game is cited for background: Cohensius, Meir, Oved, Stern, *Bidding in Spades*, [arXiv:1912.11323](https://arxiv.org/abs/1912.11323) (not redistributed here).
@@ -49,14 +49,14 @@ git clone <this repository> && cd la-boucle-cas-jeu-de-plis
 python3 -m unittest discover -s tests -t .       # 20 tests, a few seconds
 
 python3 -m trickloop play --seed demo            # one game between four reference bots
-python3 -m trickloop measure --bot rules         # the meter checks itself: about 25 % (four equal players)
+python3 -m trickloop measure --bot rules         # the meter checks itself: about 25% (four equal players)
 python3 -m trickloop loop --workdir run --passes 4 --preset fast
 python3 -m trickloop dashboard recit/journal.jsonl -o story.html   # the REAL experiment's journal as a dashboard
 ```
 
 `loop` does, in order (this is the real loop, in miniature):
 
-1. **Zero point**: checks the meter is fair (reference vs reference ≈ 25 %), trains a first champion
+1. **Zero point**: checks the meter is fair (reference vs reference ≈ 25%), trains a first champion
    from nothing, then trains the same recipe again with another seed to measure the *initialisation
    lottery*; the keep margin is `max(2 points, lottery)`.
 2. For each pass: **diagnosis** (how often does the champion hit its bid? how does that compare
