@@ -120,3 +120,7 @@ experiment you need the game engine; see [`docs/regenerate.md`](docs/regenerate.
 * The example game is small and our own: its numbers say nothing about the commercial game. A learned bot that beats the reference here would not be a result about that game.
 * In `fast` mode the measures are short; a "kept" verdict can still be luck (that is why the control set and the margin exist, and why the journal prints both).
 * The real experiment ran on one game and one reference bot, for five days; its lessons are method lessons, not a benchmark.
+
+---
+
+**Anthony Hunt** · [ingevision.cloud](https://ingevision.cloud/?lang=en) · [LinkedIn](https://www.linkedin.com/in/anthony-hunt-3948a9196) · [GitHub profile](https://github.com/anthohunt)
